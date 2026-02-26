@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Store</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: white;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background: rgba(2,6,23,0.9);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #22c55e;
+}
+
+/* CATEGORY */
+form {
+    text-align: center;
+    margin: 20px;
+}
+
+select, button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+}
+
+button {
+    background: #22c55e;
+    color: white;
+}
+
+/* GRID */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 15px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.price {
+    color: #22c55e;
+    font-weight: bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="logo">🛒 MyStore</div>
+
+    <div>
+        <a href="/cart" style="color:white;">🛒 Cart</a>
+        <a href="/logout" style="color:white; margin-left:10px;">Logout</a>
+    </div>
+</div>
+
+<form method="POST">
+    <select name="category">
+        {% for cat in categories %}
+        <option value="{{ cat }}">{{ cat }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Recommend</button>
+</form>
+
+<h2 style="text-align:center;">✨ Recommended Products</h2>
+
+<div class="products">
+{% for product in products %}
+<div class="card">
+
+    <img src="{{ product.image }}">
+
+    <p>{{ product.name }}</p>
+
+    <p class="price">₹ {{ product.price }}</p>
+
+    <form action="/add_to_cart" method="POST">
+    <input type="hidden" name="name" value="{{ product.name }}">
+    <input type="hidden" name="image" value="{{ product.image }}">
+    <input type="hidden" name="price" value="{{ product.price }}">
+
+    <button type="submit">Add to Cart</button>
+</form>
+</div>
+{% endfor %}
+</div>
+
+</body>
+</html>

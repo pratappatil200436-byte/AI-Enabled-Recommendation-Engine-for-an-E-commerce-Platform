@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        .cart-container {
+            width: 80%;
+            margin: auto;
+        }
+
+        .item {
+            background: #1e293b;
+            padding: 15px;
+            margin: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        img {
+            width: 80px;
+            border-radius: 8px;
+        }
+
+        .info {
+            flex: 1;
+            margin-left: 20px;
+            text-align: left;
+        }
+
+        button {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🛒 Your Cart</h1>
+
+<div class="cart-container">
+
+    {% if products %}
+        {% set total = 0 %}
+
+        {% for product in products %}
+        <div class="item">
+            <img src="{{ product.image }}" alt="">
+
+            <div class="info">
+                <h3>{{ product.name }}</h3>
+                <p>₹ {{ product.get('price', 0) }}</p>
+            </div>
+
+            <!-- Remove Button -->
+            <form action="/remove_from_cart" method="POST">
+                <input type="hidden" name="index" value="{{ loop.index0 }}">
+                <button type="submit">Remove</button>
+            </form>
+        </div>
+
+        {% set total = total + product.get('price', 0) %}
+        {% endfor %}
+
+        <h2>Total: ₹ {{ total }}</h2>
+
+    {% else %}
+        <h2>Your cart is empty 😢</h2>
+    {% endif %}
+
+</div>
+
+<br>
+<a href="/">⬅ Back to Home</a>
+
+</body>
+</html>
